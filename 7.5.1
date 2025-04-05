@@ -1,0 +1,172 @@
+#include <iostream>
+#include <string>
+#include <array>
+#include <limits>
+
+enum class InputPosition
+{
+	first_number,
+	second_number,
+	COUNT          //Модульный код, это счетчик количество позиций чисел типо у меня он означает что у меня 2 числа всего
+};
+
+constexpr std::array<std::string_view, static_cast<size_t>(InputPosition::COUNT)> inputPosition{ // явное приведение типа static_cast<size_t>(InputPosition::COUNT), потому что enum class нельзя неявно преобразовывать к целым числам (в отличие от обычного enum).
+	"first",																			 // size_t — тип, используемый в массивах и контейнерах для размеров и индексов (беззнаковый).
+	"second"
+};
+
+void calculator();
+int userInputNumber(InputPosition numberPosition);
+void ignoreLine();
+void inputError();
+std::string_view printPositionNumber(InputPosition position);
+bool isContinue();
+void printResult(int userFirst, int userSecond, char userOperation);
+char userInputOperation();
+
+
+
+int main()
+{
+
+	calculator();
+
+	return 0;
+}
+
+void calculator()
+{
+	do
+	{
+		int userNumberOne{ userInputNumber(InputPosition::first_number) };
+
+		int userNumberTwo{ userInputNumber(InputPosition::second_number) };
+
+		char userOperation{ userInputOperation() };
+
+		printResult(userNumberOne, userNumberTwo, userOperation);
+
+	} while (isContinue());
+
+}
+
+int userInputNumber(InputPosition numberPosition)
+
+{
+
+	while (true)
+	{
+		std::cout << "Enter a " << printPositionNumber(numberPosition) << " value : ";
+
+		int userFirst{};
+
+		std::cin >> userFirst;
+
+
+		if (std::cin.fail())
+		{
+			inputError();
+
+			continue;
+		}
+
+			return userFirst;
+	}
+
+}
+
+void ignoreLine()
+{
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void inputError()
+{
+	std::cin.clear();
+
+	ignoreLine();
+
+	std::cout << "Oops, that input is invalid.  Please try again.\n";
+}
+
+ std::string_view printPositionNumber(InputPosition position)
+{
+	return inputPosition[static_cast<size_t>(position)];
+}
+
+bool isContinue()
+{
+	while (true)
+	{
+		std::cout << "Enter 'y' to continue or 'n' to stop: ";
+
+		char userResult{};
+
+		std::cin >> userResult;
+
+		ignoreLine();
+
+		if (userResult == 'y' || userResult == 'Y')
+			return true;
+		else if (userResult == 'n' || userResult == 'N')
+			return false;
+		else
+			std::cout << "Invalid input! Please enter 'y' or 'n'.\n";
+	}
+}
+
+void printResult(int userFirst, int userSecond, char userOperation)
+
+{
+	switch (userOperation)
+	{
+	case '+':
+		std::cout << userFirst << " + " << userSecond << " is " << userFirst + userSecond << '\n';
+		break;
+	case '-':
+		std::cout << userFirst << " - " << userSecond << " is " << userFirst - userSecond << '\n';
+		break;
+	case '*':
+		std::cout << userFirst << " * " << userSecond << " is " << userFirst * userSecond << '\n';
+		break;
+	case '/':
+		if (userSecond != 0)
+		{
+			std::cout << userFirst << " / " << userSecond << " is " << userFirst / userSecond << '\n';
+		}
+		std::cerr << "Error: Division by zero is not allowed.\n";
+		break;
+	case '%':
+			std::cout << userFirst << " % " << userSecond << " is " << userFirst % userSecond << '\n';
+			break;
+	default:
+		std::cerr << "Something went wrong: printResult() got an invalid operator.\n";
+	}
+}
+
+char userInputOperation()
+
+{
+	while (true)
+	{
+		std::cout << "Enter one of the following: +, -, *,/ or %: ";
+
+		char operation{};
+
+		std::cin >> operation;
+
+		ignoreLine();
+
+		switch (operation)
+		{
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+		case '%':
+			return operation;
+		default:
+			std::cout << "Oops, that input is invalid.  Please try again.\n";
+		}
+	}
+}
