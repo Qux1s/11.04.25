@@ -1,0 +1,23 @@
+#include <iostream>
+
+int main()
+{
+	int count{ 0 };
+
+	char firstCharacter{ 97 };
+
+	while (static_cast<int>(firstCharacter) <= 122)
+	{
+		std::cout << firstCharacter << "=" << static_cast<int>(firstCharacter) << " ";
+
+		++firstCharacter;
+		++count;
+
+		if (count % 10 == 0)
+		{
+			std::cout << '\n';
+		}
+	}
+
+	return 0;
+}
