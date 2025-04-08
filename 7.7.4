@@ -1,6 +1,15 @@
 #include <iostream>
 
+void printResult();
+
 int main()
+{
+    printResult();
+
+    return 0;
+}
+
+void printResult()
 {
     int outer{ 1 };
     while (outer <= 5)
@@ -10,7 +19,7 @@ int main()
 
         static int indentCount{ 1 };
 
-        int indent { 5- indentCount };
+        int indent{ 5 - indentCount };
 
         while (indent > 0)
         {
@@ -31,6 +40,4 @@ int main()
 
         ++outer;
     }
-
-    return 0;
 }
