@@ -1,0 +1,24 @@
+#include <iostream>
+
+int sumTo(int);
+
+int main()
+{
+    std::cout << sumTo(5);
+
+    return 0;
+}
+
+int sumTo(int userNumber)
+{
+   int sum { 0 };
+
+    while (userNumber >= 0)
+    {
+        sum += userNumber;
+
+        --userNumber;
+    }
+
+    return sum;
+}
